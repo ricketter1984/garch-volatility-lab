@@ -1,0 +1,11 @@
+Date,Open,High,Low,Close,Volume
+2023-01-01,1800.00,1815.50,1795.25,1810.75,1250
+2023-01-02,1810.75,1825.00,1805.50,1820.25,1380
+2023-01-03,1820.25,1835.75,1815.00,1830.50,1150
+2023-01-04,1830.50,1845.25,1825.75,1840.00,1420
+2023-01-05,1840.00,1855.50,1835.25,1850.75,1680
+# This is a placeholder file with sample MGC (Micro Gold) futures data
+# Replace with actual data from your data provider
+# Date format: YYYY-MM-DD
+# Prices in USD per troy ounce (scaled for micro contracts)
+# Volume in number of contracts traded 
