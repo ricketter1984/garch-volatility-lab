@@ -190,3 +190,37 @@ See LICENSE file for details.
 - Multi-asset portfolio optimization
 - Options pricing with GARCH volatility
 - Integration with additional trading platforms
+
+## Stage Analysis Scanner
+
+`stage_analysis/` + `run_stage_scan.py` classify stocks into Weinstein stages, rank Stage 1 bases on
+how close they are to a Stage 2 transition, flag TMA-convergence lateral consolidations
+(Variant 1 / Variant 2), and measure sector & theme performance over 1W / 1M / 3M / 6M / YTD / 1Y.
+
+```bash
+python run_stage_scan.py                          # Stage 1->2 candidates + theme/sector tables
+python run_stage_scan.py --stage 2a               # early Stage 2 / fresh breakouts
+python run_stage_scan.py --stage 4 --theme quantum nuclear
+python run_stage_scan.py --stage v2 --filters     # Variant 2 setups passing $0.50-150 & Vol(30)>500k
+python run_stage_scan.py --universe my_list.csv   # add your own tickers (ticker,sector,themes)
+```
+
+Stage views: `1to2`, `1`, `2`, `2a`, `3`, `4`, `v1`, `v2`, `all`. Every run also writes
+`reports/stage_scan.html`, an interactive report where you can switch stage, theme and sector,
+sort any column, and click a theme to drill into its stocks.
+
+**Stages** (weekly bars, 30-week SMA, slope over 4 weeks): 1 = flat MA after a decline,
+2 = price above rising MA, 3 = flat MA after an advance, 4 = price below falling MA.
+Sub-stages: `1->2 Transition`, `2A Breakout`, `2A Early`, `2B Extended`, `4A Breakdown`.
+
+**1->2 transition score (0-100):** base length, MA flattening/turning up, price above 30W/10W,
+distance to the base pivot high, 10/20/40-week MA convergence, Bollinger/Keltner squeeze,
+OBV trend & highs, Mansfield RS vs SPY, and volume expansion versus the base.
+
+**Setup flags:** daily 10/20 EMA compressed against the 50 EMA / 150 SMA / 200 SMA, weekly
+10/20 SMA against the 40 SMA, lateral consolidation length (days and weeks), ADR(20), Vol(30),
+MACD-V, PMO, and the share-vs-options vehicle (> $20 -> options).
+
+**Sectors & themes:** sector SPDRs, thematic ETFs and ~30 thematic stock baskets with median
+returns, RS vs SPY, RRG-style rotation (Leading / Improving / Weakening / Lagging) and stage
+breadth (% of members in each stage, % above the 30W MA, number of 1->2 candidates).
